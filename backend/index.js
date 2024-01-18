@@ -10,14 +10,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const userRoutes = require('./routers/authrouter');
 const postRoutes = require('./routers/postrouter');
+//const voteRoutes = require('./routers/Interactionrouter');
 
 app.use('/auth', userRoutes);
 app.use('/post', postRoutes);
+//app.use('/vote', voteRoutes);
 //app.use('/messages', chatRoutes);
 
 //connect to db
 mongoose.connect(
-	"***"
+	"mongodb+srv://webcamp36:34rkG6lJTQrdzaVx@cluster0.5hmqsyi.mongodb.net/"
 );
 mongoose.connection.on("connected", () => {
 	console.log("DB connected");

@@ -23,14 +23,38 @@ const getPosts = async (req, res) => {
 };
 
 const getPostById = async (req, res) => {
-	const id = req.params.id;
-	try {
-		const post = await postModel.findById(id);
-		return res.status(200).json(post);
-	} catch (err) {
-		return res.status(500).json(err);
-	}
+    const id = req.params.id;
+    try {
+        const post = await postModel.findById(id);
+        const postInfos = await postModel.aggregate([
+            { $match: { _id: post._id } }, // Use _id from the post fetched by findById
+            {
+                $lookup: {
+                    from: "Vote",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "Comment",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "comments",
+                },
+            },
+           
+        ]);
+
+        return res.status(200).json(postInfos);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 };
+
+module.exports = { getPostById };
+
 
 const updatePost = async (req, res) => {
 	const id = req.params.id;
