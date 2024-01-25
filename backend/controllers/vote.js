@@ -18,7 +18,7 @@ const votePost = async (req, res) => {
     } catch (err) {
         return res.status(500).json(err);
     }
-};
+}; 
 
 
 const unvotePost = async (req, res) => {
