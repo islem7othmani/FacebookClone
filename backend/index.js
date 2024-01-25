@@ -8,12 +8,14 @@ const app = express();
 app.use(cors());  
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const userRoutes = require('./routers/authrouter');
+const authRoutes = require('./routers/authrouter');
 const postRoutes = require('./routers/postrouter');
+const userRoutes = require('./routers/userRouter');
 //const voteRoutes = require('./routers/Interactionrouter');
 
-app.use('/auth', userRoutes);
+app.use('/auth', authRoutes);
 app.use('/post', postRoutes);
+app.use('/user',userRoutes );
 //app.use('/vote', voteRoutes);
 //app.use('/messages', chatRoutes);
 

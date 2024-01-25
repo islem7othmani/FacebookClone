@@ -22,6 +22,39 @@ const getPosts = async (req, res) => {
 	}
 };
 
+const getPostsByCreator = async (req, res) => {
+    const creatorId = req.params.creator;
+
+    try {
+        const posts = await postModel.aggregate([
+            { $match: { creator: creatorId } }, // Match posts by the specified creator
+            {
+                $lookup: {
+                    from: "Vote",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "likes",
+                },
+            },
+            {
+                $lookup: {
+                    from: "Comment",
+                    localField: "_id",
+                    foreignField: "post",
+                    as: "comments",
+                },
+            },
+            { $sort: { createdAt: -1 } } // Optionally sort the posts by createdAt field
+        ]);
+
+        return res.status(200).json(posts);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+};
+
+
+
 const getPostById = async (req, res) => {
     const id = req.params.id;
     try {
@@ -85,3 +118,4 @@ module.exports.getPosts = getPosts;
 module.exports.getPostById = getPostById;
 module.exports.updatePost = updatePost;
 module.exports.deletePost = deletePost;
+module.exports.getPostsByCreator=getPostsByCreator;
