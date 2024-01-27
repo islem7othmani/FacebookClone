@@ -4,6 +4,8 @@ const createPost = async (req, res) => {
 	const newPost = new postModel({
 		creator: req.body.creator,
 		content: req.body.content,
+        image: req.body.image,
+        video: req.body.video,
 	});
 	try {  
 		const savedPost = await newPost.save();

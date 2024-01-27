@@ -6,7 +6,9 @@ const postModel = mongoose.Schema(
         content: {
             type: mongoose.Schema.Types.Mixed, // Accepts any type of data
             required: true
-        }
+        },
+        image:{type:String},
+        video:{type:String},
     },
     {timestamps:true}
 )
